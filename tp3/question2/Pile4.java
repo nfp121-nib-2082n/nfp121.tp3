@@ -61,20 +61,24 @@ public class Pile4 implements PileI, Cloneable {
 	public void empiler(Object o) throws PilePleineException {
 		if (estPleine())
 			throw new PilePleineException();
-		// à compléter
+		Maillon maillon = new Maillon(o, stk);
+		stk = maillon;
+		nombre++;
 	}
 
 	public Object depiler() throws PileVideException {
 		if (estVide())
 			throw new PileVideException();
-		// à compléter
-		return null;
+		Object o = stk.element();
+		stk = stk.suivant();
+		nombre--;
+		return o;
 	}
 
 	public Object sommet() throws PileVideException {
 		if (estVide())
 			throw new PileVideException();
-		return null; // à compléter
+		return stk.element();
 	}
 
 	/**
@@ -83,7 +87,9 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return vrai si la pile est vide, faux autrement
 	 */
 	public boolean estVide() {
-		return false; // à compléter
+		if (stk == null)
+			return true;
+		return false;
 	}
 
 	/**
@@ -92,7 +98,7 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return vrai si la pile est pleine, faux autrement
 	 */
 	public boolean estPleine() {
-		return false; // à compléter
+		return nombre == capacite;
 	}
 
 	/**
@@ -102,16 +108,48 @@ public class Pile4 implements PileI, Cloneable {
 	 * @return une représentation en String d'une pile
 	 */
 	public String toString() {
-
 		String s = "[";
-		// à compléter
-		return s + "]";
+		Maillon x1 = null;
+		try {
+			x1 = (Maillon) stk.clone();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		while (x1 != null) {
+			s += x1.element() + (x1.suivant() != null ? ", " : "");
+			x1 = x1.suivant;
+		}
+		s = s + "]";
+		System.out.println(s);
+		return s;
 	}
 
 	public boolean equals(Object o) {
 		if (o instanceof Pile4) {
-			// à compléter
-			return false;
+			Pile4 pile = (Pile4) o;
+			if (stk == o)
+				return true;
+			// Check for nulls
+			if (stk == null || o == null)
+				return false;
+			// If the list are not the same length, then they won't be equal, easy first
+			// test case
+			if (this.capacite() != pile.capacite())
+				return false;
+
+			while (stk != null) {
+				// Step through each item in both list, if any don't match return false
+				Object x = stk.element();
+				Object x1 = pile.stk.element();
+
+				if (!x.equals(x1))
+					return false;
+				stk = stk.suivant();
+				pile.stk = pile.stk.suivant();
+			}
+
+			// Haven't returned yet, they must be equal
+			return true;
 		}
 		return false;
 	}

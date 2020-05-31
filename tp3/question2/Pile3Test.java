@@ -1,5 +1,5 @@
 package question2;
-
+import java.util.Vector;
 /**
  * Classe-test Pile3Test.
  * 
@@ -33,6 +33,10 @@ public class Pile3Test extends junit.framework.TestCase {
 	/**
 	 * Constructeur de la classe-test Pile3Test
 	 */
+	
+	private Pile3 pile3;
+	private Vector pileCompare;
+	
 	public Pile3Test() {
 	}
 
@@ -43,18 +47,84 @@ public class Pile3Test extends junit.framework.TestCase {
 	 */
 	protected void setUp() // throws java.lang.Exception
 	{
-		// Initialisez ici vos engagements
+		pile3 = new Pile3(4);
+		try {
+			pile3.empiler("Jack");
+			pile3.empiler("Queen");
+			pile3.empiler("joe");
+			pile3.empiler("King");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		pileCompare = new Vector<String>();
+		try {
+			pileCompare.add("Jack");
+			pileCompare.add("Queen");
+			pileCompare.add("joe");
+			pileCompare.add("King");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	/**
 	 * Supprime les engagements
 	 * 
-	 * MÃ©thode appelÃ©e aprÃ¨s chaque appel de mÃ©thode de test.
+	 * Méthode appelée après chaque appel de méthode de test.
 	 */
 	protected void tearDown() // throws java.lang.Exception
 	{
-		// LibÃ©rez ici les ressources engagÃ©es par setUp()
+		// Libérez ici les ressources engagées par setUp()
+	}
+
+	public void test_sommet() {
+		try {
+			assertEquals(" Sommet ? ", "King", pile3.sommet());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void test_estVide() {
+		assertEquals(" stackOfCards est vide  ? ", false, pile3.estVide());
+	}
+
+	public void test_estPleine() {
+		assertEquals(" estPleine  ? ", false, pile3.estPleine());
+	}
+
+	public void test_estPleineV2() {
+		try {
+			pile3.empiler("jad");
+			pile3.empiler("mina");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(" estPleine2  ", true, pile3.estPleine());
+	}
+
+	public void test_equals() {
+		assertEquals(" equals  ? ", true, pile3.equals(pileCompare));
+
+	}
+
+	public void test_equalsV2() {
+		try {
+			pile3.depiler();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(" equals  ? ", false, pile3.equals(pileCompare));
+	}
+
+	public void test_taille() {
+		assertEquals(" taille  ? ", 2, pile3.taille());
+	}
+
+	public void test_capacite() {
+		assertEquals(" capacite  ? ", 6, pile3.capacite());
 	}
 
 	/**

@@ -10,7 +10,7 @@ public class Pile2 implements PileI {
     private Stack<Object> stk;
 
     /** la capacite de la pile */
-    private int capacite;
+    private int capacite = CAPACITE_PAR_DEFAUT;
 
     /**
      * Creation d'une pile.
@@ -19,8 +19,8 @@ public class Pile2 implements PileI {
      *            la taille de la pile, la taille doit etre > 0
      */
     public Pile2(int taille) {
-        // prevoir le cas <=0
-        // a completer
+        if (taille > 0)
+            this.stk = new Stack<Object>();
     }
 
     // constructeur fourni
@@ -29,17 +29,21 @@ public class Pile2 implements PileI {
     }
 
     public void empiler(Object o) throws PilePleineException {
-        // a completer
+        if (estPleine())
+            throw new PilePleineException();
+        stk.push(o);
     }
 
     public Object depiler() throws PileVideException {
-        // a completer
-        return null;
+        if (estVide())
+            throw new PileVideException();
+        return stk.pop();
     }
 
     public Object sommet() throws PileVideException {
-        // a completer
-        return null;
+        if (estVide())
+            throw new PileVideException();
+        return stk.peek();
     }
 
     /**
@@ -48,8 +52,7 @@ public class Pile2 implements PileI {
      * @return vrai si la pile est vide, faux autrement
      */
     public boolean estVide() {
-        // a completer
-        return false;
+        return stk.size() == 0;
     }
 
     /**
@@ -58,8 +61,7 @@ public class Pile2 implements PileI {
      * @return vrai si la pile est pleine, faux autrement
      */
     public boolean estPleine() {
-        // a completer
-        return false;
+         return stk.size() == capacite;
     }
 
     /**
@@ -69,14 +71,62 @@ public class Pile2 implements PileI {
      * @return une representation en String d'une pile
      */
     public String toString() {
-        String s = "[";
-        // a completer
-        return s + "]";
+        StringBuffer sb = new StringBuffer("[");
+        Stack<Object> stkTemp = new Stack<Object>();
+        Stack<Object> stkTemp2 = new Stack<Object>();
+        for (int i = stk.size() - 1; i >= 0; i--) {
+            Object o = stk.pop();
+            stkTemp.push(o);
+            sb.append(o);
+            if (i > 0)
+                sb.append(", ");
+        }
+        for (int i = stkTemp.size() - 1; i >= 0; i--) {
+            Object o2 = stkTemp.pop();
+            stkTemp2.push(o2);
+        }
+        stk = stkTemp2;
+        sb.append("]");
+        return sb.toString();
     }
 
-    public boolean equals(Object o) {
-        // a completer
-        return false;
+    public boolean equals(Stack<Object> o) {
+        Stack<Object> stkTemp = new Stack<Object>();
+        Stack<Object> stkTemp2 = new Stack<Object>();
+        // If they point to the same object return true
+        if (stk == o)
+            return true;
+        // Check for nulls
+        if (stk == null || o == null)
+            return false;
+        // If the stacks are not the same length, then they won't be equal, easy first
+        // test case
+        if (stk.size() != o.size())
+            return false;
+        for (int i = stk.size() - 1; i >= 0; i--) {
+            // Step through each item in both stacks, if any don't match return false
+            Object comapre = stk.pop();
+            Object comapreTo = o.pop();
+            stkTemp.push(comapre);
+            if (comapre.getClass() == Integer.class && comapreTo.getClass() == Integer.class) {
+                if (comapre != comapreTo)
+                    return false;
+            } else if (comapre.getClass() == String.class && comapreTo.getClass() == String.class) {
+                if (comapre != comapreTo)
+                    return false;
+            }
+            // else {
+            // if(!comapre.equals(comapreTo)) return false;
+            // }
+        }
+        for (int i = stkTemp.size() - 1; i >= 0; i--) {
+            Object o2 = stkTemp.pop();
+            stkTemp2.push(o2);
+        }
+        this.stk = stkTemp2;
+
+        // Haven't returned yet, they must be equal
+        return true;
     }
 
     // fonction fournie
@@ -90,8 +140,7 @@ public class Pile2 implements PileI {
      * @return le nombre d'element
      */
     public int taille() {
-        // a completer
-        return 0;
+        return stk.size();
     }
 
     /**
@@ -100,8 +149,7 @@ public class Pile2 implements PileI {
      * @return le nombre d'element
      */
     public int capacite() {
-        // a completer
-        return 0;
+         return capacite;
     }
 
 } // Pile2.java

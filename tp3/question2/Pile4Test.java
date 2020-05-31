@@ -33,6 +33,10 @@ public class Pile4Test extends junit.framework.TestCase {
 	/**
 	 * Constructeur de la classe-test Pile4Test
 	 */
+	
+	private Pile4 pile4;
+	private Pile4 pileCompare;
+	
 	public Pile4Test() {
 	}
 
@@ -43,18 +47,83 @@ public class Pile4Test extends junit.framework.TestCase {
 	 */
 	protected void setUp() // throws java.lang.Exception
 	{
-		// Initialisez ici vos engagements
+		pile4 = new Pile4(6);
+		pileCompare = new Pile4(6);
+		try {
+			pile4.empiler("Jack");
+			pile4.empiler("Queen");
+			pile4.empiler("joe");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			pileCompare.empiler("Jack");
+			pileCompare.empiler("Queen");
+			pileCompare.empiler("joe");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	/**
 	 * Supprime les engagements
 	 * 
-	 * MÃ©thode appelÃ©e aprÃ¨s chaque appel de mÃ©thode de test.
+	 * Méthode appelée après chaque appel de méthode de test.
 	 */
 	protected void tearDown() // throws java.lang.Exception
 	{
-		// LibÃ©rez ici les ressources engagÃ©es par setUp()
+		// Libérez ici les ressources engagées par setUp()
+	}
+
+	public void test_sommet() {
+		try {
+			assertEquals(" Sommet ? ", "joe", pile4.sommet());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void test_estVide() {
+		assertEquals(" stackOfCards est vide  ? ", false, pile4.estVide());
+	}
+
+	public void test_estPleine() {
+		assertEquals(" estPleine  ? ", false, pile4.estPleine());
+	}
+
+	public void test_estPleineV2() {
+		try {
+			pile4.empiler("jad");
+			pile4.empiler("mina");
+			pile4.empiler("toto");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(" estPleine2  ", true, pile4.estPleine());
+	}
+
+	public void test_equals() {
+		assertEquals(" equals  ? ", true, pile4.equals(pileCompare));
+
+	}
+
+	public void test_equalsV2() {
+		try {
+			pile4.depiler();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(" equals  ? ", false, pile4.equals(pileCompare));
+	}
+
+	public void test_taille() {
+		assertEquals(" taille  ? ", 3, pile4.taille());
+	}
+
+	public void test_capacite() {
+		assertEquals(" capacite  ? ", 6, pile4.capacite());
 	}
 
 }
